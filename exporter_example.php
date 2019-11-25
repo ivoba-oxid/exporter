@@ -10,17 +10,9 @@ use \IvobaOxid\Exporter\Entry\EntryMaker;
 use \IvobaOxid\Exporter\Exporter;
 use \IvobaOxid\Exporter\Query\ParentProducts;
 use \IvobaOxid\Exporter\Query\Products;
-use \IvobaOxid\Exporter\Resolver\BasePrice;
-use \IvobaOxid\Exporter\Resolver\Category;
-use \IvobaOxid\Exporter\Resolver\CategoryPath;
 use \IvobaOxid\Exporter\Resolver\Currency;
 use \IvobaOxid\Exporter\Resolver\Image;
-use \IvobaOxid\Exporter\Resolver\Manufacturer;
-use \IvobaOxid\Exporter\Resolver\MainCategoryId;
-use \IvobaOxid\Exporter\Resolver\Price;
-use \IvobaOxid\Exporter\Resolver\ShippingFee;
 use \IvobaOxid\Exporter\Resolver\TitleWithVariant;
-use \IvobaOxid\Exporter\Resolver\Url;
 
 $langParams = Registry::getConfig()->getConfigParam('aLanguageParams');
 $shopUrl    = Registry::get("oxConfigFile")->getVar('sShopURL');
