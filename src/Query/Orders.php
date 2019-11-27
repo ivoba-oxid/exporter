@@ -9,16 +9,26 @@ class Orders implements QueryInterface
 {
     private $db;
     private $config;
+    private $filter;
+    private $sort;
 
     /**
      * Orders constructor.
      * @param DatabaseInterface $db
      * @param Config $config
+     * @param string|null $filter
+     * @param string|null $sort
      */
-    public function __construct(DatabaseInterface $db, Config $config)
-    {
+    public function __construct(
+        DatabaseInterface $db,
+        Config $config,
+        string $filter = null,
+        string $sort = null
+    ) {
         $this->db     = $db;
         $this->config = $config;
+        $this->filter = $filter;
+        $this->sort   = $sort;
     }
 
     public function get(array $context = [])
@@ -27,12 +37,11 @@ class Orders implements QueryInterface
 
         $sql = "SELECT oxorder.*
                 FROM oxorder";
-
-        if(isset($context['filter'])) {
-            $sql .= ' '.$context['filter'];
+        if ($this->filter) {
+            $sql .= ' '.$this->filter;
         }
-        if(isset($context['sort'])) {
-            $sql .= ' '.$context['sort'];
+        if ($this->sort) {
+            $sql .= ' '.$this->sort;
         }
 
         $result = $this->db->select($sql);
@@ -43,7 +52,7 @@ class Orders implements QueryInterface
         }
 
         if ($this->config->getDebug()) {
-            echo count($data) . " orders found.<br>";
+            echo count($data)." orders found.<br>";
         }
 
         return $data;
