@@ -6,7 +6,7 @@ Export framework for OXID eShop.
 - PHP >= 7
 
 ## Installation
-- run 'composer require ivoba-oxid/oxid-exporter'
+- run 'composer require ivoba-oxid/exporter'
 
 ## Usage
 Create an exporter, see exporter_example.php.
