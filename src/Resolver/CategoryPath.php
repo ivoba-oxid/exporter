@@ -8,12 +8,6 @@ class CategoryPath implements ResolverInterface
     private $mainCategoryIdResolver;
     private $categoryResolver;
 
-    /**
-     * CategoryPath constructor.
-     * @param MainCategoryId $mainCategoryIdResolver
-     * @param Category $catogoryResolver
-     * @param string $separator
-     */
     public function __construct(
         MainCategoryId $mainCategoryIdResolver,
         Category $categoryResolver,
@@ -23,7 +17,6 @@ class CategoryPath implements ResolverInterface
         $this->mainCategoryIdResolver = $mainCategoryIdResolver;
         $this->categoryResolver       = $categoryResolver;
     }
-
 
     public function supports(): string
     {

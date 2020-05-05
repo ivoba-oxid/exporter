@@ -59,7 +59,7 @@ class Config
     /**
      * @return string
      */
-    public function getDelimiter():string
+    public function getDelimiter(): string
     {
         return $this->delimiter;
     }
@@ -78,7 +78,7 @@ class Config
     /**
      * @return string
      */
-    public function getEol():string
+    public function getEol(): string
     {
         return $this->eol;
     }
@@ -116,7 +116,7 @@ class Config
     /**
      * @return string|null
      */
-    public function getHeadLine():?string
+    public function getHeadLine(): ?string
     {
         return $this->headLine;
     }
@@ -154,7 +154,7 @@ class Config
     /**
      * @return bool
      */
-    public function getDebug():bool
+    public function getDebug(): bool
     {
         return $this->debug;
     }

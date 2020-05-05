@@ -11,11 +11,6 @@ class ParentProducts implements QueryInterface
 
     private $config;
 
-    /**
-     * ParentProducts constructor.
-     * @param DatabaseInterface $db
-     * @param Config $config
-     */
     public function __construct(DatabaseInterface $db, Config $config)
     {
         $this->db     = $db;
@@ -26,11 +21,14 @@ class ParentProducts implements QueryInterface
     {
         $data = [];
 
-        $sql = "SELECT oxartex.*,oxart.*
+        $sql = "SELECT oxartex.*,oxart.*,oxseodata.oxkeywords,oxseodata.oxdescription
                 FROM oxarticles oxart 
                 LEFT JOIN oxartextends oxartex ON (oxart.oxid = oxartex.oxid)
+                LEFT JOIN oxobject2seodata oxseodata ON (oxart.oxid = oxseodata.oxobjectid
+                AND oxseodata.oxlang = 0
+                AND oxseodata.oxshopid = 1) 
                 WHERE oxart.oxactive = 1 
-                AND oxart.oxparentid = ''";
+                AND oxart.oxparentid = ''"; // todo make lang & shopid configurable
 
         $result = $this->db->select($sql);
         if ($result !== false && $result->count() > 0) {

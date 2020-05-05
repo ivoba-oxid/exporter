@@ -8,20 +8,12 @@ use IvobaOxid\Exporter\Resolver\ResolverInterface;
 class EntryMaker
 {
     private $config;
-
     /**
      * @var FilterInterface[]
      */
     private $filters;
-
     private $resolvers;
 
-    /**
-     * EntryMaker constructor.
-     * @param Config $config
-     * @param FilterInterface[] $filters
-     * @param array $resolvers
-     */
     public function __construct(Config $config, array $filters = [], array $resolvers = [])
     {
         $this->config  = $config;
@@ -39,11 +31,6 @@ class EntryMaker
 
     public function make(array $data)
     {
-        // fields & resolver if resolver isset for field use this callable
-        //get data by marker
-        //quote
-        //separator
-
         $entry   = null;
         $entries = [];
         $fields  = $this->config->getFields();

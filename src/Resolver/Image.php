@@ -7,26 +7,25 @@ use IvobaOxid\Exporter\Entity\Config;
 class Image implements ResolverInterface
 {
     private $config;
+    private $field;
+    private $imageKey;
 
-    /**
-     * Image constructor.
-     * @param Config $config
-     */
-    public function __construct(Config $config)
+    public function __construct(Config $config, string $field = 'image', string $imageKey = 'OXPIC1')
     {
-        $this->config = $config;
+        $this->config   = $config;
+        $this->field = $field;
+        $this->imageKey = $imageKey;
     }
-
 
     public function supports(): string
     {
-        return 'image';
+        return $this->field;
     }
 
     public function resolve(array $data)
     {
-        if (isset($data['OXPIC1']) && !empty($data['OXPIC1'])) {
-            $image = $data['OXPIC1'];
+        if (isset($data[$this->imageKey]) && !empty($data[$this->imageKey])) {
+            $image = $data[$this->imageKey];
         }
 
         if (isset($image)) {

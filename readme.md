@@ -9,12 +9,19 @@ Export framework for OXID eShop.
 - run 'composer require ivoba-oxid/exporter'
 
 ## Usage
-Create an exporter, see exporter_example.php.
+Create an exporter in source/, see exporter_example.php.
+
+For custom Resolver or Queries, create a custom module and place code there.
+Add an autooader in composer.json run composer install and include classes in your exporter.
+
+    "autoload": {
+        "psr-4": {
+          ...
+          "MyOxid\\Exporter\\": "./source/modules/my/exporter",
 
 ## todo
 - make cli command
   create file in bin
-- (optional) make backend that collects cli commands and renders it in textarea
 - get Attributes code/modules/marm/csvexporter/core/marmCsvExporter.php:507
 
 ## Credits
