@@ -2,23 +2,22 @@
 
 namespace IvobaOxid\Exporter\Resolver;
 
-class BasePrice implements ResolverInterface
+class BasePrice extends BaseResolver
 {
-
+    /**
+     * @var ResolverInterface
+     */
     private $priceResolver;
 
     /**
      * BasePrice constructor.
      * @param ResolverInterface $priceResolver
+     * @param string $supports
      */
-    public function __construct(ResolverInterface $priceResolver)
+    public function __construct(ResolverInterface $priceResolver, string $supports)
     {
         $this->priceResolver = $priceResolver;
-    }
-
-    public function supports(): string
-    {
-        return 'baseprice';
+        parent::__construct($supports);
     }
 
     public function resolve(array $data)

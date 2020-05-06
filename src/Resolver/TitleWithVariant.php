@@ -2,14 +2,13 @@
 
 namespace IvobaOxid\Exporter\Resolver;
 
-class TitleWithVariant implements ResolverInterface
+class TitleWithVariant extends BaseResolver
 {
-    public function supports(): string
-    {
-        return 'oxtitle';
-    }
-
-    public function resolve(array $data)
+    /**
+     * @param array $data
+     * @return string
+     */
+    public function resolve(array $data): string
     {
         $title = $data['OXTITLE'];
         if ($data['OXVARSELECT'] !== '') {

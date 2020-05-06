@@ -4,22 +4,17 @@ namespace IvobaOxid\Exporter\Resolver;
 
 use IvobaOxid\Exporter\Entity\Config;
 
-class Image implements ResolverInterface
+class Image extends BaseResolver
 {
     private $config;
     private $field;
     private $imageKey;
 
-    public function __construct(Config $config, string $field = 'image', string $imageKey = 'OXPIC1')
+    public function __construct(Config $config, string $supports, string $imageKey = 'OXPIC1')
     {
         $this->config   = $config;
-        $this->field = $field;
         $this->imageKey = $imageKey;
-    }
-
-    public function supports(): string
-    {
-        return $this->field;
+        parent::__construct($supports);
     }
 
     public function resolve(array $data)

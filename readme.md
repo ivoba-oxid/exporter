@@ -20,6 +20,7 @@ Add an autooader in composer.json run composer install and include classes in yo
           "MyOxid\\Exporter\\": "./source/modules/my/exporter",
 
 ## todo
+- evaluate new Article()->load()
 - make cli command
   create file in bin
 - get Attributes code/modules/marm/csvexporter/core/marmCsvExporter.php:507

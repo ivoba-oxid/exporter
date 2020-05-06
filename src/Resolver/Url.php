@@ -5,7 +5,7 @@ namespace IvobaOxid\Exporter\Resolver;
 use IvobaOxid\Exporter\Entity\Config;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 
-class Url implements ResolverInterface
+class Url extends BaseResolver
 {
     private $config;
     private $db;
@@ -15,23 +15,23 @@ class Url implements ResolverInterface
     /**
      * Url constructor.
      * @param Config $config
+     * @param DatabaseInterface $db
      * @param MainCategoryId $mainCategoryIdResolver
+     * @param string $supports
+     * @param string $nonSeourl
      */
     public function __construct(
         Config $config,
         DatabaseInterface $db,
         MainCategoryId $mainCategoryIdResolver,
+        string $supports,
         string $nonSeourl = '/index.php?cl=details&anid='
     ) {
         $this->config                 = $config;
         $this->db                     = $db;
         $this->mainCategoryIdResolver = $mainCategoryIdResolver;
         $this->nonSeoUrl              = $nonSeourl;
-    }
-
-    public function supports(): string
-    {
-        return 'url';
+        parent::__construct($supports);
     }
 
     public function resolve(array $data)
@@ -42,7 +42,7 @@ class Url implements ResolverInterface
 
         //if child has no maincategory take the parent category
         if (!$categoryId && isset($data['OXPARENTID'])) {
-            $parent = ['OXID' => $data['OXPARENTID']];
+            $parent     = ['OXID' => $data['OXPARENTID']];
             $categoryId = $this->mainCategoryIdResolver->resolve($parent);
         }
 

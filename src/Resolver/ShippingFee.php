@@ -2,28 +2,22 @@
 
 namespace IvobaOxid\Exporter\Resolver;
 
-class ShippingFee implements ResolverInterface
+class ShippingFee extends BaseResolver
 {
-
     private $priceResolver;
 
     /**
      * ShippingFee constructor.
      * @param ResolverInterface $priceResolver
      */
-    public function __construct(ResolverInterface $priceResolver)
+    public function __construct(ResolverInterface $priceResolver, string $supports)
     {
         $this->priceResolver = $priceResolver;
-    }
-
-    public function supports(): string
-    {
-        return 'shippingfee';
+        parent::__construct($supports);
     }
 
     public function resolve(array $data)
     {
-
         /*
          * Todo can we get this from the DB?
          * OXFREESHIPPING
@@ -36,7 +30,7 @@ class ShippingFee implements ResolverInterface
             ],
         ];
         $productPrice = $this->priceResolver->resolve($data);
-        $marker  = 0;
+        $marker       = 0;
         for ($i = 0; $i < count($shippingcost); $i++) {
             if ($productPrice >= $shippingcost[$i]['from']) {
                 $marker = $i;

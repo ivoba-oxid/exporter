@@ -4,23 +4,18 @@ namespace IvobaOxid\Exporter\Resolver;
 
 use IvobaOxid\Exporter\Entity\Config;
 
-class Price implements ResolverInterface
+class Price extends BaseResolver
 {
-
     private $config;
 
     /**
      * Price constructor.
      * @param $config
      */
-    public function __construct(Config $config)
+    public function __construct(Config $config, string $supports)
     {
         $this->config = $config;
-    }
-
-    public function supports(): string
-    {
-        return 'oxprice';
+        parent::__construct($supports);
     }
 
     public function resolve(array $data)

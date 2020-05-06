@@ -26,10 +26,6 @@ class Exporter
      * @var Csv
      */
     private $csv;
-    /**
-     * @var int
-     */
-    private $count = 0;
 
     /**
      * Exporter constructor.
@@ -44,7 +40,7 @@ class Exporter
             return $items;
         })(...$queries);
         $this->entryMaker = $entryMaker;
-        $this->csv = new Csv();
+        $this->csv        = new Csv();
     }
 
 
@@ -52,25 +48,25 @@ class Exporter
     {
         $data = $this->loadData();
 
-        $fields = [];
-        if ($this->config->getHeadLine()) {
-            $fields = explode($this->config->getDelimiter(), $this->config->getHeadLine());
-        }
         $rows = [];
         foreach ($data as $datum) {
-            $entry = $this->entryMaker->make($datum);
-            if ($entry) {
-                $rows[] = $entry;
+            if ($row = $this->entryMaker->make($datum)) {
+                $rows[] = $row;
             }
         }
-        $this->csv->delimiter = $this->config->getDelimiter();
-        $this->csv->enclose_all = $this->config->getQuote();
-        $this->csv->linefeed = $this->config->getEol();
+        $this->csv->delimiter       = $this->config->getDelimiter();
+        $this->csv->enclose_all     = $this->config->getQuote();
+        $this->csv->linefeed        = $this->config->getEol();
         $this->csv->output_encoding = 'UTF-8';
-        $this->csv->save($this->config->getFile(), $rows, $append = FileProcessingModeEnum::MODE_FILE_OVERWRITE, $fields);
+        $this->csv->save(
+            $this->config->getFile(),
+            $rows,
+            $append = FileProcessingModeEnum::MODE_FILE_OVERWRITE,
+            $this->config->getFields()
+        );
 
         if ($this->config->getDebug()) {
-            echo "Done! Exported ".$this->count." articles!<br>";
+            echo "Done! Exported ".count($rows)." articles!<br>";
         }
     }
 

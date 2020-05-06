@@ -10,21 +10,17 @@ use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
  * Class ManufacturerCategory
  * @package IvobaOxid\Exporter\Resolver
  */
-class ManufacturerCategory implements ResolverInterface
+class ManufacturerCategory extends BaseResolver
 {
     private $db;
     private $catId;
     private $manufacturers;
 
-    public function __construct(DatabaseInterface $db, string $catId)
+    public function __construct(DatabaseInterface $db, string $catId, string $supports)
     {
         $this->db    = $db;
         $this->catId = $catId;
-    }
-
-    public function supports(): string
-    {
-        return 'manufacturer';
+        parent::__construct($supports);
     }
 
     public function resolve(array $data)
@@ -34,9 +30,9 @@ class ManufacturerCategory implements ResolverInterface
         }
 
         $sql    = "select oxcatnid
-                from oxobject2category
-                where oxobjectid = '".$data['OXID']."'
-                order by oxtime;";
+                    from oxobject2category
+                    where oxobjectid = '".$data['OXID']."'
+                    order by oxtime;";
         $result = $this->db->select($sql);
         if ($result !== false && $result->count() > 0) {
             while (!$result->EOF) {

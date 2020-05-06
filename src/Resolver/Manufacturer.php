@@ -2,12 +2,10 @@
 
 namespace IvobaOxid\Exporter\Resolver;
 
-
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 
-class Manufacturer implements ResolverInterface
+class Manufacturer extends BaseResolver
 {
-
     const OXMANUFACTURERID = 'OXMANUFACTURERID';
     private $db;
     private $manufacturers;
@@ -16,15 +14,10 @@ class Manufacturer implements ResolverInterface
      * Manufacturer constructor.
      * @param DatabaseProvider $db
      */
-    public function __construct(DatabaseInterface $db)
+    public function __construct(DatabaseInterface $db, string $supports)
     {
         $this->db = $db;
-    }
-
-
-    public function supports(): string
-    {
-        return 'manufacturer';
+        parent::__construct($supports);
     }
 
     public function resolve(array $data)
@@ -40,9 +33,6 @@ class Manufacturer implements ResolverInterface
         return '';
     }
 
-    /**
-     * @todo this might move to a dedicated loader class
-     */
     protected function loadManufactures()
     {
         $this->manufacturers = [];

@@ -4,18 +4,14 @@ namespace IvobaOxid\Exporter\Resolver;
 
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 
-class MainCategoryId implements ResolverInterface
+class MainCategoryId extends BaseResolver
 {
     private $db;
 
-    public function __construct(DatabaseInterface $db)
+    public function __construct(DatabaseInterface $db, string $supports)
     {
         $this->db = $db;
-    }
-
-    public function supports(): string
-    {
-        return 'main_category_id';
+        parent::__construct($supports);
     }
 
     public function resolve(array $data)

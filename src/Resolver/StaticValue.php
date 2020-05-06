@@ -2,22 +2,28 @@
 
 namespace IvobaOxid\Exporter\Resolver;
 
-class StaticValue implements ResolverInterface
+class StaticValue extends BaseResolver
 {
-    private $supports;
+    /**
+     * @var
+     */
     private $value;
 
-    public function __construct(string $supports, $value)
+    /**
+     * StaticValue constructor.
+     * @param $value
+     * @param string $supports
+     */
+    public function __construct($value, string $supports)
     {
-        $this->supports = $supports;
         $this->value    = $value;
+        parent::__construct($supports);
     }
 
-    public function supports(): string
-    {
-        return $this->supports;
-    }
-
+    /**
+     * @param array $data
+     * @return mixed|null
+     */
     public function resolve(array $data)
     {
         return $this->value;

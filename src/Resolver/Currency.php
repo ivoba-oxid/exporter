@@ -4,31 +4,24 @@ namespace IvobaOxid\Exporter\Resolver;
 
 use OxidEsales\Eshop\Core\Config;
 
-class Currency implements ResolverInterface
+class Currency extends BaseResolver
 {
 
     private $config;
 
     /**
      * Currency constructor.
-     * @param $config
+     * @param Config $config
+     * @param string $supports
      */
-    public function __construct(Config $config)
+    public function __construct(Config $config, string $supports)
     {
         $this->config = $config;
-    }
-
-
-    public function supports(): string
-    {
-        return 'currency';
+        parent::__construct($supports);
     }
 
     public function resolve(array $data)
     {
-        $cur = $this->config->getActShopCurrencyObject();
-
-        return $cur->name;
+        return $this->config->getActShopCurrencyObject()->name;
     }
-
 }

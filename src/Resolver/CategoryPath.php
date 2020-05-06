@@ -2,7 +2,7 @@
 
 namespace IvobaOxid\Exporter\Resolver;
 
-class CategoryPath implements ResolverInterface
+class CategoryPath extends BaseResolver
 {
     private $separator;
     private $mainCategoryIdResolver;
@@ -11,16 +11,13 @@ class CategoryPath implements ResolverInterface
     public function __construct(
         MainCategoryId $mainCategoryIdResolver,
         Category $categoryResolver,
-        string $separator = '>'
+        string $separator = '>',
+        string $supports
     ) {
         $this->separator              = $separator;
         $this->mainCategoryIdResolver = $mainCategoryIdResolver;
         $this->categoryResolver       = $categoryResolver;
-    }
-
-    public function supports(): string
-    {
-        return 'categorypath';
+        parent::__construct($supports);
     }
 
     public function resolve(array $data)
@@ -29,7 +26,7 @@ class CategoryPath implements ResolverInterface
 
         //if child has no maincategory take the parent category
         if (!$categoryId && isset($data['OXPARENTID'])) {
-            $parent = ['OXID' => $data['OXPARENTID']];
+            $parent     = ['OXID' => $data['OXPARENTID']];
             $categoryId = $this->mainCategoryIdResolver->resolve($parent);
         }
 
@@ -37,12 +34,11 @@ class CategoryPath implements ResolverInterface
             $path       = [];
             $categories = $this->categoryResolver->loadCategories();
             while ($categoryId != 'oxrootid') {
-                if(isset($categories[$categoryId])) {
+                if (isset($categories[$categoryId])) {
                     array_unshift($path, $categories[$categoryId]['title']);
 
                     $categoryId = $categories[$categoryId]['parent'];
-                }
-                else{
+                } else {
                     break;
                 }
             }

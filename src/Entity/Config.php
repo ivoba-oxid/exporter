@@ -11,7 +11,6 @@ class Config
     private $delimiter = ';';
     private $eol = "\r";
     private $quote = true;
-    private $headLine;
     private $fields;
     private $debug = false;
 
@@ -109,25 +108,6 @@ class Config
     public function setQuote(bool $quote)
     {
         $this->quote = $quote;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getHeadLine(): ?string
-    {
-        return $this->headLine;
-    }
-
-    /**
-     * @param string $headLine
-     * @return Config
-     */
-    public function setHeadLine(string $headLine)
-    {
-        $this->headLine = $headLine;
 
         return $this;
     }
