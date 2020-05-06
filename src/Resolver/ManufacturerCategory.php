@@ -4,6 +4,12 @@ namespace IvobaOxid\Exporter\Resolver;
 
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 
+/**
+ * In case you use a category for manufacturers
+ *
+ * Class ManufacturerCategory
+ * @package IvobaOxid\Exporter\Resolver
+ */
 class ManufacturerCategory implements ResolverInterface
 {
     private $db;
@@ -23,31 +29,37 @@ class ManufacturerCategory implements ResolverInterface
 
     public function resolve(array $data)
     {
-        // TODO: Implement resolve() method.
-    }
+        if ($this->manufacturers === null) {
+            $this->loadManufactures();
+        }
 
-    /**
-     * @todo this might move to a dedicated loader class
-     */
-    protected function loadManufactures($productId, array $categoriesTitleCache)
-    {
-        $this->manufacturers = [];
-        $sql                 = "select oxcatnid
-                                from oxobject2category
-                                where oxobjectid = '" . $productId . "'
-                                order by oxtime;";
-        $result              = $this->db->select($sql);
+        $sql    = "select oxcatnid
+                from oxobject2category
+                where oxobjectid = '".$data['OXID']."'
+                order by oxtime;";
+        $result = $this->db->select($sql);
         if ($result !== false && $result->count() > 0) {
             while (!$result->EOF) {
-                $data                               = $result->fetchRow();
+                $data = $result->fetchRow();
+                if (isset($this->manufacturers[$data['oxcatnid']])) {
+                    return $this->manufacturers[$data['oxcatnid']];
+                }
+            }
+        }
 
-//                if (isset($this->manufacturers[$data['oxcatnid']])) {
-//                    if ($categoriesTitleCache[$categoriesTitleCache[$row['oxcatnid']]['parentid']]['parentid'] == 'oxrootid'
-//                        && $categoriesTitleCache[$categoriesTitleCache[$row['oxcatnid']]['parentid']]['title'] == $categoriesTitleCache[$manufacturerCatID]['title']
-//                    ) {
-//                        return $categoriesTitleCache[$row['oxcatnid']]['title'];
-//                    }
-//                }
+        return null;
+    }
+
+    protected function loadManufactures()
+    {
+        $this->manufacturers = [];
+        $sql                 = "select oxid, oxtitle 
+                             from oxcategories
+                             where oxparentid = '".$this->catId."'";
+        $result              = $this->db->select($sql);
+        if ($result !== false && $result->count() > 0) {
+            foreach ($result as $row) {
+                $this->manufacturers[$row['oxid']] = $row['oxtitle'];
             }
         }
     }
