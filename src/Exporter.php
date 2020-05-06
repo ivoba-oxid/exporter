@@ -54,7 +54,7 @@ class Exporter
 
         $fields = [];
         if ($this->config->getHeadLine()) {
-            $fields = $this->config->getFields();
+            $fields = explode($this->config->getDelimiter(), $this->config->getHeadLine());
         }
         $rows = [];
         foreach ($data as $datum) {
