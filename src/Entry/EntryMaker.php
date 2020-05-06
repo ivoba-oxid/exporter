@@ -29,13 +29,11 @@ class EntryMaker
     }
 
 
-    public function make(array $data)
+    public function make(array $data): array
     {
         $entry   = null;
         $entries = [];
-        $fields  = $this->config->getFields();
-
-        $columns = explode('|', $fields);
+        $columns = $this->config->getFields();
 
         foreach ($columns as $column) {
 
@@ -50,47 +48,10 @@ class EntryMaker
                 }
             }
 
-            $entries[] = $this->quote().$value.$this->quote();
+            $entries[] = $value;
+
         }
 
-        if ($entries) {
-            $entry = implode($this->config->getDelimiter(), $entries).$this->config->getEol();
-        }
-
-        return $entry;
-    }
-
-    private function quote(): string
-    {
-        return $this->config->getQuote() ? '"' : '';
-    }
-
-    /**
-     * caching explodes
-     * fill $this->entryFields
-     */
-    public function cachingEntryFields(array $fields)
-    {
-        $result = array();
-        $col    = 0;
-        $conc   = 0;
-        $fb     = 0;
-
-        $columns = explode('|', $fields); //split the header
-        foreach ($columns as $column) {
-            $concatenations = explode('+', $column);
-
-            foreach ($concatenations as $concatenate) {
-                $varFallbacks = explode('/', $concatenate);
-                foreach ($varFallbacks as $marker) {
-                    $result[$col][$conc][$fb] = $marker;
-                    $fb++;
-                }
-
-                $conc++;
-            }
-            $col++;
-        }
-        $this->entryFields = $result;
+        return $entries;
     }
 }

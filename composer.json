@@ -12,7 +12,8 @@
   ],
   "require": {
     "php": ">=7.1",
-    "oxid-esales/oxideshop-ce": "^v6.0"
+    "oxid-esales/oxideshop-ce": "^v6.0",
+    "parsecsv/php-parsecsv": "^1.2"
   },
   "require-dev": {
     "phpunit/phpunit": "^7"

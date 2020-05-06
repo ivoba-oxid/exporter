@@ -15,7 +15,7 @@ class ExporterExampleTest extends TestCase
         $config = new Config(__DIR__.'/example.csv', 'test.url', 1);
         $config->setDebug(true)
                ->setHeadLine('Product_id;Product_name;Image_URL')
-               ->setFields('oxid|oxtitle|image')
+               ->setFields(explode('|', 'oxid|oxtitle|image'))
                ->setImgPath('/out/pictures/generated/product/1/380_340_75/');
         $queries    = [];
         $entryMaker = new EntryMaker(

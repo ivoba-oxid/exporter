@@ -9,7 +9,7 @@ class Config
     private $lang;
 
     private $delimiter = ';';
-    private $eol = "\n";
+    private $eol = "\r";
     private $quote = true;
     private $headLine;
     private $fields;
@@ -133,18 +133,18 @@ class Config
     }
 
     /**
-     * @return mixed
+     * @return array|null
      */
-    public function getFields()
+    public function getFields(): ?array
     {
         return $this->fields;
     }
 
     /**
-     * @param mixed $fields
-     * @return Config
+     * @param array $fields
+     * @return $this
      */
-    public function setFields($fields)
+    public function setFields(array $fields)
     {
         $this->fields = $fields;
 

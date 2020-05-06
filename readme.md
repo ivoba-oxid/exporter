@@ -1,5 +1,5 @@
 # Exporter
-Export framework for OXID eShop.
+CSV Export framework for OXID eShop.
 
 ## Requirements
 - Oxid eShop >= 6

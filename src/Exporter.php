@@ -5,6 +5,8 @@ namespace IvobaOxid\Exporter;
 use IvobaOxid\Exporter\Entity\Config;
 use IvobaOxid\Exporter\Entry\EntryMaker;
 use IvobaOxid\Exporter\Query\QueryInterface;
+use ParseCsv\Csv;
+use ParseCsv\enums\FileProcessingModeEnum;
 
 class Exporter
 {
@@ -12,22 +14,27 @@ class Exporter
      * @var Config
      */
     private $config;
-
     /**
      * @var array[QueryInterface]
      */
     private $queries;
-
+    /**
+     * @var EntryMaker
+     */
     private $entryMaker;
-
-    private $fileHandle;
-
+    /**
+     * @var Csv
+     */
+    private $csv;
+    /**
+     * @var int
+     */
     private $count = 0;
 
     /**
      * Exporter constructor.
      * @param Config $config
-     * @param QueryInterface[] $queries
+     * @param array $queries
      * @param EntryMaker $entryMaker
      */
     public function __construct(Config $config, array $queries, EntryMaker $entryMaker)
@@ -37,10 +44,40 @@ class Exporter
             return $items;
         })(...$queries);
         $this->entryMaker = $entryMaker;
+        $this->csv = new Csv();
     }
 
 
-    public function export()
+    public function export(): void
+    {
+        $data = $this->loadData();
+
+        $fields = [];
+        if ($this->config->getHeadLine()) {
+            $fields = $this->config->getFields();
+        }
+        $rows = [];
+        foreach ($data as $datum) {
+            $entry = $this->entryMaker->make($datum);
+            if ($entry) {
+                $rows[] = $entry;
+            }
+        }
+        $this->csv->delimiter = $this->config->getDelimiter();
+        $this->csv->enclose_all = $this->config->getQuote();
+        $this->csv->linefeed = $this->config->getEol();
+        $this->csv->output_encoding = 'UTF-8';
+        $this->csv->save($this->config->getFile(), $rows, $append = FileProcessingModeEnum::MODE_FILE_OVERWRITE, $fields);
+
+        if ($this->config->getDebug()) {
+            echo "Done! Exported ".$this->count." articles!<br>";
+        }
+    }
+
+    /**
+     * @return array
+     */
+    protected function loadData(): array
     {
         $data = [];
 
@@ -55,51 +92,6 @@ class Exporter
             }
         }
 
-        $this->initFile();
-        $this->writeHeadLine();
-
-        foreach ($data as $datum) {
-            $entry = $this->entryMaker->make($datum);
-            if ($entry) {
-                $this->writeToFile($entry);
-            }
-        }
-
-        if ($this->config->getDebug()) {
-            echo "Done! Exported ".$this->count." articles!<br>";
-        }
-    }
-
-    private function initFile()
-    {
-        if (file_exists($this->config->getFile())) {
-            unlink($this->config->getFile());
-        }
-        $this->fileHandle = fopen($this->config->getFile(), "w+");
-    }
-
-    private function writeHeadLine()
-    {
-        if ($this->config->getHeadLine()) {
-            $data = $this->config->getHeadLine();
-            //todo maybe apply config->seperator and config->quote to data
-            fputs($this->fileHandle, $data.$this->config->getEol());
-        }
-    }
-
-    private function writeToFile(string $entry)
-    {
-        fputs($this->fileHandle, $entry);
-        $this->count++;
-        if ($this->config->getDebug()) {
-            echo $entry."<br>";
-        }
-    }
-
-    public function __destruct()
-    {
-        if ($this->fileHandle) {
-            fclose($this->fileHandle);
-        }
+        return $data;
     }
 }
