@@ -12,6 +12,7 @@ use \IvobaOxid\Exporter\Query\ParentProducts;
 use \IvobaOxid\Exporter\Query\Products;
 use \IvobaOxid\Exporter\Resolver\Currency;
 use \IvobaOxid\Exporter\Resolver\Image;
+use \IvobaOxid\Exporter\Resolver\StaticValue;
 use \IvobaOxid\Exporter\Resolver\TitleWithVariant;
 
 $langParams = Registry::getConfig()->getConfigParam('aLanguageParams');
@@ -19,7 +20,7 @@ $shopUrl    = Registry::get("oxConfigFile")->getVar('sShopURL');
 $config     = new Config(__DIR__.'/export/example.csv', $shopUrl, $langParams['de']['baseId']);
 $config->setDebug(true)
        ->setHeadLine('Product_id;Product_name;Image_URL')
-       ->setFields('oxid|oxtitle|image')
+       ->setFields(explode('|', 'oxid|oxtitle|empty|image'))
        ->setImgPath('/out/pictures/generated/product/1/380_340_75/');
 
 $db = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
@@ -40,6 +41,7 @@ $entryMaker           = new EntryMaker(
         $titleResolver,
         $currencyResolver,
         $imageResolver,
+        new StaticValue('', 'empty')
     ]
 );
 

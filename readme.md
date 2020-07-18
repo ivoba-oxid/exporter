@@ -1,6 +1,8 @@
 # Exporter
 CSV Export framework for OXID eShop.
 
+*Work in Progress: Caution! not stable atm*
+
 ## Requirements
 - Oxid eShop >= 6
 - PHP >= 7
