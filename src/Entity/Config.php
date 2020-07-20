@@ -13,6 +13,7 @@ class Config
     private $quote = true;
     private $fields;
     private $debug = false;
+    private $printHeader = true;
 
     private $imgPath = '';
     private $netPrices = false;
@@ -113,6 +114,25 @@ class Config
     }
 
     /**
+     * @return bool
+     */
+    public function getPrintHeader(): bool
+    {
+        return $this->printHeader;
+    }
+
+    /**
+     * @param bool $printHeader
+     * @return $this
+     */
+    public function setPrintHeader(bool $printHeader)
+    {
+        $this->printHeader = $printHeader;
+
+        return $this;
+    }
+
+    /**
      * @return array|null
      */
     public function getFields(): ?array
@@ -206,31 +226,4 @@ class Config
 
         return $this;
     }
-
-
-//'export_parents' => 0,               // Should parents be shown in file !!!not available
-//'export_children' => true,               // Should export artice with children article
-//'filename' => '../../../../../export/lionshome.csv', // Export filename relative to this file (for local test)
-//'limit' => 500,             // limit for export !!!not available
-//'debug' => false,           // enable / disable debug-output
-//'silent' => false,            // enable / disable regular messages
-//'header' => true,            // enable / disable headerline
-//'langid' => 0,               // LanguageId for which you want to export
-//'shippingcost' => array(           //shipping cost categories
-//array('from' => 0, 'cost' => 4.9)
-//),
-//'shippingcost_at' => array(           //shipping cost categories
-//array('from' => 0, 'cost' => 8.5)
-//),/**/
-//'productLinkPrefix' => '/index.php?cl=details&anid=',       //standard product url prefix
-//'googleProductLinkParameters' => 'utm_source=lionshome', //google parameters for product
-//'imageurl' => '/out/pictures/generated/product/1/380_340_75/', //standard image url path
-//'condition' => 'neu',                               //condition always new product
-//'inStock' => true,                         //product in stock description
-//'outOfStock' => false,                   //product out of stock description
-//'cutFirstPosArticlenumber' => 0,                                   // cut the first n position from the article number
-//'generalVat' => 19,                                  // general vat value for net prices
-//'netPrices' => false,                                // net prices true/false
-//'categoryPathSeparator' => '-',
-//'quote' => true
 }

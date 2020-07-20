@@ -62,7 +62,7 @@ class Exporter
             $this->config->getFile(),
             $rows,
             $append = FileProcessingModeEnum::MODE_FILE_OVERWRITE,
-            $this->config->getFields() //todo make switch to render header or not
+            $this->config->getPrintHeader() ? $this->config->getFields() : null
         );
 
         if ($this->config->getDebug()) {
